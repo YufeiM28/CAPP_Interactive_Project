@@ -25,9 +25,9 @@ you may re-use data sources from before or switch topics
 
 ### Data Source 1: {Name}
 
-URL: {URL}
+URL: https://catalog.data.gov/dataset/nchs-teen-birth-rates-for-age-group-15-19-in-the-united-states-by-county
 
-Size: {Number of Rows} rows, {Number of Columns} columns
+Size: 56467 rows, 9 columns
 
 {Short Description, including any exploration you've done already}
 
