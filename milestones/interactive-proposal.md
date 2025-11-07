@@ -27,8 +27,6 @@ Size: 56467 rows, 9 columns
 
 ## Questions
 
-{Numbered list of questions for course staff, if any.}
-
 1.
 2.
 3.
