@@ -2,7 +2,7 @@
 
 ## Description
 
-Using the data on birth rate of teenage girls, I am planning to map out the longitudinal changes in the U.S. In terms of the interactive feature, audiences would be able to click on a specific state and to learn more about the data regarding to its yearly changes. On the other hand, audiences could also select which year they want to focus more on by getting a glimpse of the density map of birth rate across states.
+Using the data on the birth rate of teenage girls, I am planning to map out the longitudinal changes in the U.S. In terms of the interactive feature, audiences would be able to click on a specific state and to learn more about the data regarding its yearly changes. On the other hand, audiences could also select which year they want to focus more on by getting a glimpse of the density map of birth rates across states.
 
 ## Technical Plan re: Option A/B/C/D
 
