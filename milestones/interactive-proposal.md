@@ -23,10 +23,11 @@ URL: https://catalog.data.gov/dataset/nchs-teen-birth-rates-for-age-group-15-19-
 
 Size: 56467 rows, 9 columns
 
-This dataset from the National Center for Health Statistics (NCHS) provided model-based estimates of teen birth rates among females aged 15–19 years for all U.S. counties from 2003 through 2020. The columns represented year, regional information, and birth rate (including both estimation and confidence intervals) while each row refered to a county in the U.S. More specific, the estimation value demonstrated the number of live births per 1,000 females aged 15–19 in each county and year.
+This dataset from the National Center for Health Statistics (NCHS) provided model-based estimates of teen birth rates among females aged 15–19 years for all U.S. counties from 2003 through 2020. The columns represented year, regional information, and birth rate (including both estimation and confidence intervals) while each row refered to a county in the U.S. More specific, the estimation value demonstrated the number of live births per 1,000 females aged 15–19 in each county and year. It would be interested to look into as well as visualizing the data from all perspectives. For instance, one trend I am hoping to find is that the teen birth rate would decrease as time goes across all states/counties. I also think it would be meaningful to explore if there is any state-level differences in given years (e.g., would red states and blue states have distinct pattern around this data?).  
+
 
 ## Questions
 
-1.
+1. For my major density map, I am planning to take the average of all counties for each state and visualize those "processed" results. Once participants  
 2.
 3.
