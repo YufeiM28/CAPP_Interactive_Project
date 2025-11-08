@@ -8,7 +8,7 @@ Using the data on the birth rate of teenage girls, I am planning to map out the 
 
 I’m choosing Option C (Geospatial Visualization) because my dataset is inherently spatial (state/county birth rates across years), and a map is the most direct way to surface geographic patterns and let users dive into regions they care about. As recommended, I am planning to use MapLibreGL for the base map. To fulfill the requirement of using D3, I would build a line chart of birth rate over time for the selected state. 
 
-Inspired from:
+Inspired by:
 1. https://datacommons.org/explore#client=ui_query&q=birth+rate
 2. https://yhchang717.github.io/Housing-School/
 
