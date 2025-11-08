@@ -23,7 +23,7 @@ URL: https://catalog.data.gov/dataset/nchs-teen-birth-rates-for-age-group-15-19-
 
 Size: 56467 rows, 9 columns
 
-{Short Description, including any exploration you've done already}
+This dataset from the National Center for Health Statistics (NCHS) provided model-based estimates of teen birth rates among females aged 15–19 years for all U.S. counties from 2003 through 2020. The columns represented year, regional information, and birth rate (including both estimation and confidence intervals) while each row refered to a county in the U.S. More specific, the estimation value demonstrated the number of live births per 1,000 females aged 15–19 in each county and year.
 
 ## Questions
 
