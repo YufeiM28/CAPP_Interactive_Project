@@ -2,7 +2,7 @@
 
 ## Description
 
-{what are you trying to accomplish?}
+Using the data on birth rate of teenage girls, I am planning to map out the longitudinal changes in the U.S. 
 
 ## Technical Plan re: Option A/B/C/D
 
