@@ -28,6 +28,4 @@ This dataset from the National Center for Health Statistics (NCHS) provided mode
 
 ## Questions
 
-1. For my major density map, I am planning to take the average of all counties for each state and visualize those "processed" results. Once participants  
-2.
-3.
+1. How can I show the difference between red and blue states (if I identify a trend) in a density map? I believe that choosing distinct colors might increase their cognitive load because it is difficult to communicate both density and state difference using a single element. 
