@@ -6,11 +6,11 @@ Using the data on birth rate of teenage girls, I am planning to map out the long
 
 ## Technical Plan re: Option A/B/C/D
 
-I am planning on using Option C since my selected data include a lot of geospatial information. 
-which path are you planning on? why?
-what libraries?
-include 2 or more pieces that you plan to draw inspiration from
-}
+I’m choosing Option C (Geospatial Visualization) because my dataset is inherently spatial (state/county birth rates across years), and a map is the most direct way to surface geographic patterns and let users dive into regions they care about. As recommended, I am planning to use MapLibreGL for the base map. To fulfill the requirement of using D3, I would build a line chart of birth rate over time for the selected state. 
+
+Inspired from:
+1. https://datacommons.org/explore#client=ui_query&q=birth+rate
+2. https://yhchang717.github.io/Housing-School/
 
 ## Mockup
 
