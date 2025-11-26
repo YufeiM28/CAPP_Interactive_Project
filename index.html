@@ -250,6 +250,7 @@
       opacity: 0;
       white-space: nowrap;
       z-index: 10;
+      transform: translate(-50%, -60%);
     }
 
     /* ---------- PLACEHOLDER FOR FUTURE LINE CHART ---------- */
@@ -482,8 +483,8 @@
 
     function handleMouseMove(event, d) {
       tooltip
-        .style("left", (event.offsetX + 2) + "px")
-        .style("top", (event.offsetY - 2) + "px");
+        .style("left", event.offsetX + "px")
+        .style("top", event.offsetY + "px");
     }
 
     function handleMouseOut() {
