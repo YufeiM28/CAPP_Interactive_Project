@@ -238,7 +238,7 @@
 
     /* ---------- TOOLTIP ---------- */
     .tooltip {
-      position: absolute;
+      position: fixed;
       pointer-events: none;
       background: rgba(59, 11, 18, 0.98);
       color: #fff5f7;
@@ -250,7 +250,6 @@
       opacity: 0;
       white-space: nowrap;
       z-index: 10;
-      transform: translate(-50%, -60%);
     }
 
     /* ---------- PLACEHOLDER FOR FUTURE LINE CHART ---------- */
@@ -483,8 +482,8 @@
 
     function handleMouseMove(event, d) {
       tooltip
-        .style("left", event.offsetX + "px")
-        .style("top", event.offsetY + "px");
+        .style("left", (event.clientX + 2) + "px")
+        .style("top", (event.offsetY -4) + "px");
     }
 
     function handleMouseOut() {
