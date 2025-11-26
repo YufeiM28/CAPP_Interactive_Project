@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Teen Birth Rates by State</title>
+  <!-- D3 + TopoJSON + color scales -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="https://unpkg.com/topojson-client@3"></script>
+
+  <!--style in css-->
+  <style>
+    /* ---------- COLOR THEME (pink / red) ---------- */
+    :root {
+      --bg: #ffe6ea;          /* page background */
+      --panel: #fff5f7;       /* card background */
+      --accent: #d90429;      /* buttons / highlights */
+      --text-main: #3b0b12;   /* main text (dark reddish brown) */
+      --text-muted: #7b4b57;  /* secondary text */
+      --border-subtle: #f0b8c3; /* card borders */
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);   /* solid pink background */
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1200px;
+      margin: 32px 16px;
+      background: var(--panel);  /* solid panel color */
+      border-radius: 20px;
+      border: 1px solid var(--border-subtle);
+      box-shadow:
+        0 30px 60px rgba(0, 0, 0, 0.12),
+        0 0 0 1px rgba(255, 255, 255, 0.6);
+      padding: 24px 28px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* ---------- HEADER ---------- */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.6rem;
+      letter-spacing: 0.03em;
+    }
+
+    .subtitle {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      max-width: 1020px; /* wide, stretches across the map area */
+      line-height: 1.4;
+    }
+
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-end;
+    }
+
+    .control-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+    }
+
+    select {
+      background: #ffffff;
+      border-radius: 999px;
+      padding: 6px 14px;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      font-size: 0.9rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(217, 4, 41, 0.4);
+    }
+
+    /* ---------- LAYOUT ---------- */
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 1.2fr);
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 900px) {
+      main {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    /* ---------- CARDS ---------- */
+    .card {
+      background: var(--panel);   /* clean panel color */
+      border-radius: 16px;
+      border: 1px solid var(--border-subtle);
+      padding: 14px 14px 16px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .card-meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* ---------- MAP ---------- */
+    #map {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .state {
+      stroke: #8d4a58;
+      stroke-width: 0.5;
+      cursor: pointer;
+      transition: fill 0.2s ease-out, stroke 0.2s ease-out, stroke-width 0.2s ease-out;
+    }
+
+    .state:hover {
+      stroke: var(--accent);
+      stroke-width: 1.3;
+    }
+
+    .state.active {
+      stroke: #ffffff;
+      stroke-width: 1.6;
+    }
+
+    /* ---------- LEGEND ---------- */
+    .legend {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 10px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .legend-bar {
+      height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(to right, #ffe6ea, #b50926);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .legend-scale {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* ---------- SIDEBAR / INSTRUCTIONS ---------- */
+    .sidebar-content {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .sidebar-highlight {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(217, 4, 41, 0.08);
+      border: 1px solid rgba(217, 4, 41, 0.5);
+      font-size: 0.75rem;
+      color: var(--accent);
+    }
+
+    .pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    /* ---------- TOOLTIP ---------- */
+    .tooltip {
+      position: absolute;
+      pointer-events: none;
+      background: rgba(59, 11, 18, 0.98);
+      color: #fff5f7;
+      padding: 6px 9px;
+      font-size: 0.8rem;
+      border-radius: 8px;
+      border: 1px solid rgba(240, 184, 195, 0.8);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      opacity: 0;
+      transform: translate(-50%, -120%);
+      white-space: nowrap;
+      z-index: 10;
+    }
+
+    /* ---------- PLACEHOLDER FOR FUTURE LINE CHART ---------- */
+    #line-chart-placeholder {
+      margin-top: 8px;
+      font-size: 0.8rem;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: rgba(255, 225, 232, 0.9);
+      border: 1px dashed rgba(240, 184, 195, 0.9);
+      color: var(--text-main);
+    }
+  </style>
+
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="title-block">
+        <h1>Teen Birth Rates Across the United States</h1>
+        <p class="subtitle">
+          Explore model-based estimates of teen birth rates (ages 15–19) by state and year.
+          Through the year selector on the right, you could see how the geographic distribution of teen birth rates changes over time.
+          Additionally, by clicking on a state, you could have a detailed view of its trend across years.
+        </p>
+      </div>
+      <div class="controls">
+        <span class="control-label">Year</span>
+        <select id="year-select"></select>
+      </div>
+    </header>
+
+    <main>
+      <section class="card">
+        <div class="card-header">
+          <div class="card-title">State-level teen birth rates</div>
+          <div class="card-meta" id="map-meta">Loading data…</div>
+        </div>
+        <svg id="map" viewBox="0 0 975 610"></svg>
+
+        <div class="legend">
+          <div>Teen births per 1,000 females aged 15–19</div>
+          <div class="legend-bar"></div>
+          <div class="legend-scale">
+            <span id="legend-min">low</span>
+            <span id="legend-mid">median</span>
+            <span id="legend-max">high</span>
+          </div>
+        </div>
+
+        <div class="tooltip" id="tooltip"></div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <div class="card-title">How to read this map</div>
+        </div>
+        <div class="sidebar-content">
+          <p>
+            Each state is shaded based on its teen birth rate in the selected year.
+            Darker shades indicate higher rates (more teen births per 1,000 females aged 15–19).
+          </p>
+          <p>
+            Use the <strong>Year</strong> selector to step through time and see how the spatial pattern of teen birth rates evolves.
+          </p>
+          <p class="sidebar-highlight">
+            Teen birth rates over time
+          </p>
+          <div id="line-chart">
+          </div>
+        </section>
+    </main>
+  </div>
+
+  <!-- main.js -->
+  <script>
+    const MAP_URL = "data/states-albers-10m.json"; // adopted from last-year students' project
+    const DATA_URL = "data/state_birth_rates.csv";
+
+    const svg = d3.select("#map");
+    const width = 975;
+    const height = 610;
+    const tooltip = d3.select("#tooltip");
+    const yearSelect = d3.select("#year-select");
+    const mapMeta = d3.select("#map-meta");
+
+    // D3 geoPath with no projection, since states-albers-10m.json is already projected to Albers
+    const path = d3.geoPath();
+
+    // Data structures we’ll populate
+    let statesGeo;                 // GeoJSON FeatureCollection of states
+    let ratesRaw = [];             // Flat CSV rows
+    let dataByStateYear;           // Map: state -> Map(year -> row)
+    let allYears = [];
+    let colorScale;
+
+    // --------------------------------------------------------------------
+    // Load data (TopoJSON + CSV) and then render
+    // --------------------------------------------------------------------
+    Promise.all([
+      d3.json(MAP_URL),
+      d3.csv(DATA_URL, d => ({
+        state: d.State,
+        year: +d.Year,
+        rate: +d["State Birth Rate"]
+      }))
+   // autoType turns year into number if possible
+    ]).then(([topology, csvData]) => {
+      ratesRaw = csvData;
+
+      // TopoJSON -> GeoJSON; your states are likely under objects.states
+      statesGeo = topojson.feature(topology, topology.objects.states);
+
+      // Extract unique years from CSV
+      allYears = Array.from(new Set(ratesRaw.map(d => d.year))).sort((a, b) => d3.ascending(a, b));
+
+      // Group data by state -> year
+      // Adjust "state" and "year" and "rate" here if your column names differ
+      dataByStateYear = d3.rollup(
+        ratesRaw,
+        v => v[0],
+        d => d.state,
+        d => d.year
+      );
+
+      // Build a global color scale across all years
+      const rateExtent = d3.extent(ratesRaw, d => d.rate);
+      colorScale = d3.scaleSequential()
+        .domain([rateExtent[0], rateExtent[1]])
+        .interpolator(d3.interpolateReds);
+
+      // Populate the year dropdown
+      yearSelect
+        .selectAll("option")
+        .data(allYears)
+        .join("option")
+        .attr("value", d => d)
+        .text(d => d);
+
+      yearSelect.on("change", () => {
+        const year = +yearSelect.node().value;
+        updateMap(year);
+      });
+
+      // Initial render: use the first year in the dataset
+      const initialYear = allYears[0];
+      yearSelect.property("value", initialYear);
+      drawMap(initialYear);
+
+      // Legend labels
+      d3.select("#legend-min").text(rateExtent[0].toFixed(1));
+      d3.select("#legend-max").text(rateExtent[1].toFixed(1));
+      d3.select("#legend-mid").text(((rateExtent[0] + rateExtent[1]) / 2).toFixed(1));
+    }).catch(err => {
+      console.error("Error loading data:", err);
+      mapMeta.text("Error loading map or data");
+    });
+
+    // --------------------------------------------------------------------
+    // Draw the base map (just once)
+    // --------------------------------------------------------------------
+    function drawMap(initialYear) {
+      const states = statesGeo.features;
+
+      svg
+        .attr("width", width)
+        .attr("height", height);
+
+      // Bind one path per state
+      svg.selectAll("path.state")
+        .data(states)
+        .join("path")
+        .attr("class", "state")
+        .attr("d", path)
+        .on("mouseover", (event, d) => handleMouseOver(event, d))
+        .on("mousemove", (event, d) => handleMouseMove(event, d))
+        .on("mouseout", handleMouseOut)
+        .on("click", (event, d) => handleStateClick(d));
+
+      updateMap(initialYear);
+    }
+
+    // --------------------------------------------------------------------
+    // Update fill colors for a given year
+    // --------------------------------------------------------------------
+    function updateMap(year) {
+      const states = statesGeo.features;
+
+      // Compute basic summary for the meta text
+      const valuesForYear = ratesRaw.filter(d => d.year === year).map(d => d.rate);
+      const avg = d3.mean(valuesForYear);
+      const min = d3.min(valuesForYear);
+      const max = d3.max(valuesForYear);
+
+      mapMeta.text(
+        `Year ${year} · min: ${min.toFixed(1)}, avg: ${avg.toFixed(1)}, max: ${max.toFixed(1)} (births per 1,000)`
+      );
+
+      svg.selectAll("path.state")
+        .transition()
+        .duration(500)
+        .attr("fill", d => {
+          const stateName = d.properties.name;
+          const stateMap = dataByStateYear.get(stateName);
+          if (!stateMap) return "#333842";
+
+          const row = stateMap.get(year);
+          return row ? colorScale(row.rate) : "#333842";
+        });
+    }
+
+    // --------------------------------------------------------------------
+    // Tooltip handlers
+    // --------------------------------------------------------------------
+    function handleMouseOver(event, d) {
+      const stateName = d.properties.name;
+      const year = +yearSelect.node().value;
+
+      const stateMap = dataByStateYear.get(stateName);
+      let text;
+      if (stateMap && stateMap.get(year)) {
+        const { rate } = stateMap.get(year);
+        text = `${stateName} — ${rate.toFixed(1)} per 1,000 (year ${year})`;
+      } else {
+        text = `${stateName} — no data for year ${year}`;
+      }
+
+      tooltip
+        .style("opacity", 1)
+        .text(text);
+    }
+
+    function handleMouseMove(event, d) {
+      tooltip
+        .style("left", (event.offsetX + 10) + "px")
+        .style("top", (event.offsetY - 10) + "px");
+    }
+
+    function handleMouseOut() {
+      tooltip.style("opacity", 0);
+    }
+
+    // --------------------------------------------------------------------
+    // Click handler (for now: highlight + console.log; line chart later)
+    // --------------------------------------------------------------------
+    function handleStateClick(d) {
+      const stateName = d.properties.name;
+
+      svg.selectAll(".state").classed("active", s => s === d);
+
+      // Placeholder behaviour: log to console
+      console.log("Clicked state:", stateName);
+
+      renderLineChart(stateName, ratesRaw, allYears);
+    }
+  </script>
+  <script src="linechart.js"></script>
+</body>
+</html>
+
+
