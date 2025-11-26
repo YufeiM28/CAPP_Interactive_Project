@@ -483,8 +483,8 @@
     function handleMouseMove(event, d) {
       const svgRect = svg.node().getBoundingClientRect();
       tooltip
-        .style("left", (svgRect.left + event.offsetX - 20) + "px")
-        .style("top",  (svgRect.top  + event.offsetY - 30) + "px");
+        .style("left", (svgRect.left + event.offsetX + 20) + "px")
+        .style("top",  (svgRect.top  + event.offsetY + 20) + "px");
     }
 
     function handleMouseOut() {
