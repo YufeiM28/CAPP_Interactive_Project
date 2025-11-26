@@ -15,8 +15,10 @@ function renderLineChart(stateName, ratesRaw, allYears) {
   }
 
   // Dimensions
+  const margin = { top: 24, right: 36, bottom: 32, left: 48 };
   const containerWidth = container.node().clientWidth;
   const width = containerWidth - margin.left - margin.right;
+  const height = 230;
 
   // Title
   container.append("div")
