@@ -238,7 +238,7 @@
 
     /* ---------- TOOLTIP ---------- */
     .tooltip {
-      position: fixed;
+      position: absolute;
       pointer-events: none;
       background: rgba(59, 11, 18, 0.98);
       color: #fff5f7;
@@ -481,9 +481,10 @@
     }
 
     function handleMouseMove(event, d) {
+      const svgRect = svg.node().getBoundingClientRect();
       tooltip
-        .style("left", (event.clientX + 2) + "px")
-        .style("top", (event.offsetY - h - 10) + "px");
+        .style("left", (svgRect.left + event.offsetX + 10) + "px")
+        .style("top",  (svgRect.top  + event.offsetY + 10) + "px");
     }
 
     function handleMouseOut() {
