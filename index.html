@@ -8,15 +8,15 @@
   <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
   <script src="https://unpkg.com/topojson-client@3"></script>
 
-  /* -- style in css -- */
+  <!-- style in css -->
   <style>
     :root {
-      --bg: #ffe6ea;          /* page background */
-      --panel: #fff5f7;       /* card background */
-      --accent: #d90429;      /* buttons / highlights */
-      --text-main: #3b0b12;   /* main text (dark reddish brown) */
+      --bg: #ffe6ea;          /* background */
+      --panel: #fff5f7;       /* card */
+      --accent: #d90429;      /* highlights */
+      --text-main: #3b0b12;   /* main text */
       --text-muted: #7b4b57;  /* secondary text */
-      --border-subtle: #f0b8c3; /* card borders */
+      --border-subtle: #f0b8c3; /* card border */
     }
 
     * {
@@ -71,7 +71,7 @@
       margin: 0;
       font-size: 0.9rem;
       color: var(--text-muted);
-      max-width: 1020px; /* wide, stretches across the map area */
+      max-width: 1020px; 
       line-height: 1.4;
     }
 
@@ -297,7 +297,7 @@
     </main>
   </div>
 
-  /* -- main.js -- */
+  <!-- main.js -->
   <script>
     const MAP_URL = "data/states-albers-10m.json"; // adopted from last-year students' project
     const DATA_URL = "data/state_birth_rates.csv";
