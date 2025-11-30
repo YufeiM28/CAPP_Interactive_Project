@@ -407,7 +407,7 @@
       const max = d3.max(valuesForYear);
 
       mapMeta.text(
-        `Year ${year} · min: ${min.toFixed(1)}, avg: ${avg.toFixed(1)}, max: ${max.toFixed(1)} (births per 1,000)`
+        `Year ${year} · min: ${min.toFixed(1)}, avg: ${avg.toFixed(1)}, max: ${max.toFixed(1)}`
       );
 
       svg.selectAll("path.state")
@@ -415,12 +415,9 @@
         .duration(500)
         .attr("fill", d => {
           const stateName = d.properties.name;
-          const stateMap = dataByStateYear.get(stateName);
-          if (!stateMap) return "#333842";
-
-          const row = stateMap.get(year);
-          return row ? colorScale(row.rate) : "#333842";
-        });
+          const row = dataByStateYear.get(stateName).get(year);
+          return colorScale(row.rate);
+      });
     }
 
   
