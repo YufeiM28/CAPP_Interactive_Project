@@ -6,35 +6,27 @@ function renderLineChart(stateName, ratesRaw, allYears) {
     .filter(d => d.state === stateName)
     .sort((a, b) => d3.ascending(a.year, b.year));
 
-  if (stateData.length === 0) {
-    container.append("p")
-      .text(`No data available for ${stateName}.`)
-      .style("font-size", "0.9rem")
-      .style("color", "gray");
-    return;
-  }
-
-  // Dimensions
+  // dimensions
   const margin = { top: 24, right: 36, bottom: 32, left: 48 };
   const containerWidth = container.node().clientWidth;
   const width = containerWidth - margin.left - margin.right;
   const height = 230;
 
-  // Title
+  // title
   container.append("div")
-    .text(`${stateName} · teen births per 1,000 females aged 15–19`)
+    .text(`${stateName} : teen births per 1,000 females`)
     .style("font-weight", "600")
     .style("margin-bottom", "6px")
-    .style("font-size", "0.85rem");
+    .style("font-size", "0.8rem");
 
-  // SVG
+  // svg
   const svg = container.append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", `translate(${margin.left},${margin.top})`);
 
-  // Scales
+  // scales
   const x = d3.scaleLinear()
     .domain(d3.extent(allYears))
     .range([0, width]);
@@ -44,7 +36,7 @@ function renderLineChart(stateName, ratesRaw, allYears) {
     .domain([0, maxRate]).nice()
     .range([height, 0]);
 
-  // Axes
+  // axes
   const xAxis = d3.axisBottom(x).tickFormat(d3.format("d")).ticks(10);
   const yAxis = d3.axisLeft(y).ticks(6);
 
@@ -54,7 +46,7 @@ function renderLineChart(stateName, ratesRaw, allYears) {
 
   svg.append("g").call(yAxis);
 
-  // Labels
+  // labels
   svg.append("text")
     .attr("x", width / 2)
     .attr("y", height + 28)
@@ -68,9 +60,9 @@ function renderLineChart(stateName, ratesRaw, allYears) {
     .attr("y", -margin.left + 12)
     .attr("text-anchor", "middle")
     .style("font-size", "11px")
-    .text("Teen births per 1,000");
+    .text("Teen births");
 
-  // Line
+  // line
   const line = d3.line()
     .x(d => x(d.year))
     .y(d => y(d.rate));
