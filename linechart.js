@@ -14,7 +14,7 @@ function renderLineChart(stateName, ratesRaw, allYears) {
 
   // title
   container.append("div")
-    .text(`${stateName} : teen births per 1,000 females`)
+    .text(`${stateName}: teen births per 1,000 females`)
     .style("font-weight", "600")
     .style("margin-bottom", "6px")
     .style("font-size", "0.8rem");
