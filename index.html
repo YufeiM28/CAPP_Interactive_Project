@@ -8,7 +8,7 @@
   <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
   <script src="https://unpkg.com/topojson-client@3"></script>
 
-  /* style in css */
+  /* -- style in css -- */
   <style>
     :root {
       --bg: #ffe6ea;          /* page background */
@@ -105,7 +105,7 @@
       box-shadow: 0 0 0 1px rgba(217, 4, 41, 0.4);
     }
 
-    /* ---------- LAYOUT ---------- */
+    /* -- LAYOUT -- */
     main {
       display: grid;
       grid-template-columns: minmax(0, 3fr) minmax(0, 1.2fr);
@@ -212,7 +212,7 @@
     }
 
 
-    /* TOOLTIP */
+    /* -- TOOLTIP -- */
     .tooltip {
       position: absolute;
       pointer-events: none;
@@ -227,7 +227,7 @@
       z-index: 10;
     }
 
-    /* PLACEHOLDER FOR LINE CHART */
+    /* -- PLACEHOLDER FOR LINE CHART -- */
     #line-chart-placeholder {
       width: 100%;
       margin-top: 8px;
@@ -297,7 +297,7 @@
     </main>
   </div>
 
-  <!-- main.js -->
+  /* -- main.js -- */
   <script>
     const MAP_URL = "data/states-albers-10m.json"; // adopted from last-year students' project
     const DATA_URL = "data/state_birth_rates.csv";
@@ -308,20 +308,16 @@
     const tooltip = d3.select("#tooltip");
     const yearSelect = d3.select("#year-select");
     const mapMeta = d3.select("#map-meta");
-
-    // D3 geoPath with no projection, since states-albers-10m.json is already projected to Albers
     const path = d3.geoPath();
 
-    // Data structures we’ll populate
+    // data structure
     let statesGeo;                 // GeoJSON FeatureCollection of states
     let ratesRaw = [];             // Flat CSV rows
     let dataByStateYear;           // Map: state -> Map(year -> row)
     let allYears = [];
     let colorScale;
 
-    // --------------------------------------------------------------------
-    // Load data (TopoJSON + CSV) and then render
-    // --------------------------------------------------------------------
+    // load and render data (map + CSV)
     Promise.all([
       d3.json(MAP_URL),
       d3.csv(DATA_URL, d => ({
@@ -333,14 +329,10 @@
     ]).then(([topology, csvData]) => {
       ratesRaw = csvData;
 
-      // TopoJSON -> GeoJSON; your states are likely under objects.states
       statesGeo = topojson.feature(topology, topology.objects.states);
-
-      // Extract unique years from CSV
       allYears = Array.from(new Set(ratesRaw.map(d => d.year))).sort((a, b) => d3.ascending(a, b));
 
-      // Group data by state -> year
-      // Adjust "state" and "year" and "rate" here if your column names differ
+      // data grouping by state to year
       dataByStateYear = d3.rollup(
         ratesRaw,
         v => v[0],
@@ -348,13 +340,13 @@
         d => d.year
       );
 
-      // Build a global color scale across all years
+      // color scale across years
       const rateExtent = d3.extent(ratesRaw, d => d.rate);
       colorScale = d3.scaleSequential()
         .domain([rateExtent[0], rateExtent[1]])
         .interpolator(d3.interpolateReds);
 
-      // Populate the year dropdown
+      // the year dropdown
       yearSelect
         .selectAll("option")
         .data(allYears)
@@ -367,12 +359,12 @@
         updateMap(year);
       });
 
-      // Initial render: use the first year in the dataset
+      // default year
       const initialYear = allYears[0];
       yearSelect.property("value", initialYear);
       drawMap(initialYear);
 
-      // Legend labels
+      // legend label
       d3.select("#legend-min").text(rateExtent[0].toFixed(1));
       d3.select("#legend-max").text(rateExtent[1].toFixed(1));
       d3.select("#legend-mid").text(((rateExtent[0] + rateExtent[1]) / 2).toFixed(1));
@@ -381,7 +373,7 @@
       mapMeta.text("Error loading map or data");
     });
 
-
+    
     // base map
     function drawMap(initialYear) {
       const states = statesGeo.features;
@@ -390,7 +382,6 @@
         .attr("width", width)
         .attr("height", height);
 
-      // Bind one path per state
       svg.selectAll("path.state")
         .data(states)
         .join("path")
@@ -409,7 +400,7 @@
     function updateMap(year) {
       const states = statesGeo.features;
 
-      // Compute basic summary for the meta text
+      // compute basic summary
       const valuesForYear = ratesRaw.filter(d => d.year === year).map(d => d.rate);
       const avg = d3.mean(valuesForYear);
       const min = d3.min(valuesForYear);
@@ -464,7 +455,7 @@
     }
 
     
-    // Click handler - line chart
+    // click & line chart
     function handleStateClick(d) {
       const stateName = d.properties.name;
 
