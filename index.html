@@ -155,7 +155,7 @@
     }
 
     .state:hover {
-      stroke: var(--accent);
+      stroke: var(--accent); 
       stroke-width: 1.3;
     }
 
@@ -395,6 +395,7 @@
       const states = statesGeo.features;
 
       // compute basic summary
+      // adopted suggestion from AI -- to provide some basic information on the top of the map so that viewers could quickly grab the key idea
       const valuesForYear = ratesRaw.filter(d => d.year === year).map(d => d.rate);
       const avg = d3.mean(valuesForYear);
       const min = d3.min(valuesForYear);
@@ -415,7 +416,8 @@
     }
 
   
-    // tooltip
+    // tooltip 
+    // AI used in fixing error
     function handleMouseOver(event, d) {
       const stateName = d.properties.name;
       const year = +yearSelect.node().value;
