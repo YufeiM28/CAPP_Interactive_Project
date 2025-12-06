@@ -88,26 +88,21 @@ function renderLineChart(stateName, ratesRaw, allYears) {
 
   // hover effect
   function onDotHover(event, d) {
-    // make dot a bit bigger
     d3.select(this).attr("r", 5);
-
-    // remove any existing hover label
     svg.selectAll(".hover-label").remove();
-
-    // add text slightly above the point
     svg.append("text")
       .attr("class", "hover-label")
       .attr("x", x(d.year))
-      .attr("y", y(d.rate) - 8)
+      .attr("y", y(d.rate) - 5)
       .attr("text-anchor", "middle")
-      .style("font-size", "11px")
+      .style("font-size", "9px")
       .style("font-weight", "600")
-      .text(d.rate.toFixed(1));  // e.g. "38.7"
+      .text(d.rate.toFixed(1));  
   }
 
   function onDotLeave(event, d) {
-    d3.select(this).attr("r", 3);               // reset radius
-    svg.selectAll(".hover-label").remove();     // remove label
+    d3.select(this).attr("r", 3);
+    svg.selectAll(".hover-label").remove();
   }
   dots
     .on("mouseover", onDotHover)
