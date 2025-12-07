@@ -93,7 +93,7 @@ function renderLineChart(stateName, ratesRaw, allYears) {
     svg.append("text")
       .attr("class", "hover-label")
       .attr("x", x(d.year))
-      .attr("y", y(d.rate) - 7)
+      .attr("y", y(d.rate) - 8)
       .attr("text-anchor", "middle")
       .style("font-size", "9px")
       .style("font-weight", "600")
