@@ -1,18 +1,18 @@
-# {Project Name}
+# Teen Birth Rate Across Time and States
 
-{Your Name}
+Yufei Mao
 
 ## Goal
 
-{What is your current goal? Has it changed since the proposal?}
+My current project goal has remained consistent with the original proposal. I aim to visualize changes in teen birth rates over time through two coordinated views: a choropleth map that shows state-level teen birth rates for a selected year, and a line chart that displays longitudinal trends for any state the user clicks on. The overarching objective is to help viewers easily compare spatial patterns and temporal changes.
 
 ## Data Challenges
 
-{Are there data challenges you are facing? Are you currently depending on mock data?}
+I am working with the real teen birth-rate dataset rather than mock data. The main challenge I encountered involves geographic resolution. My original plan was to visualize county-level data for every year, but the map quickly became visually overwhelming and difficult to interpret due to the high density of counties. To address this, I aggregated the data to the state level, which makes the choropleth more readable.
 
 ## Walk Through
 
-{Walk us through an interaction, either in words and pictures or you can record a quick 2-3 minute video.}
+The website currently features two main visual components. The choropleth map shows teen birth rates across U.S. states for any selected year. A year selector is positioned in the upper-right corner, allowing users to choose any year from 2003 to 2020. Once a year is selected, the map updates automatically. States are shaded based on a color scale, with darker regions indicating higher birth rates. The other one is a line chart that I am still working on. I am planning to make it interactive so that when a state on the map is clicked, a line chart (displayed on the right panel) would be rendered to show the state's teen birth rate changes across time.
 
 ## Questions
 
