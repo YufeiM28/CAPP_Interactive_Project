@@ -16,8 +16,5 @@
 
 ## Questions
 
-{Numbered list of questions for course staff, if any.}
-
-1. 
-2. 
-3. 
+1. Whenever I clicked on the map, the white border highlight changed depending on the state. Some have a thicker white border, while others have a more subtle border. I wondered if it was due to the map JSON I used.
+2. Another question concerns the description. I received a 0.5 point deduction from my static project for narrative, which I hope to improve in this project. In my case, I wondered if there was any additional information or context I should include to strengthen the narrative.
