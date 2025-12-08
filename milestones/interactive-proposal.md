@@ -14,7 +14,7 @@ Inspired by:
 
 ## Mockup
 
-![Description of image](CAPP_Interactive_Project/milestones/Sketch.png)
+![Description of image](/Sketch.png)
 
 ## Data Sources
 ### Data Source 1: Teen Birth Rates for Age Group 15-19 in the United States by County
